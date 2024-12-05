@@ -1,68 +1,33 @@
 import streamlit as st
-import requests
-import json
 
 # Configure page settings
 st.set_page_config(
-    page_title="Llama 2 Chatbot",
-    page_icon="🦙"
+    page_title="Llama 2 AI Assistant",
+    page_icon="🦙",
+    layout="wide"
 )
 
-# Initialize session state for chat history
-if "messages" not in st.session_state:
-    st.session_state.messages = []
+# App title and description
+st.title("🦙 Llama 2 AI Assistant")
+st.write("Welcome! Choose your desired AI assistant functionality from the sidebar.")
 
-# App title
-st.title("🦙 Llama 2 Chatbot")
+# Main page content
+st.markdown("""
+## Available Features:
 
-# Add sidebar controls
-if st.sidebar.button("Clear Chat"):
-    st.session_state.messages = []
+### 🤖 Chatbot
+Access our interactive Llama 2 chatbot for general conversations and queries.
 
-# Add model parameters in sidebar
-st.sidebar.title("Model Parameters")
-temperature = st.sidebar.slider("Temperature", min_value=0.1, max_value=2.0, value=0.7, step=0.1)
+### 🔍 Website Analyzer
+Input any website URL to get an AI-powered analysis of its content.
 
-# Function to generate response from Ollama
-def generate_response(prompt, temperature):
-    try:
-        response = requests.post(
-            'http://localhost:11434/api/generate',
-            json={
-                'model': 'llama3.2',
-                'prompt': prompt,
-                'stream': False,
-                'temperature': temperature
-            }
-        )
-        response.raise_for_status()
-        return response.json()['response']
-    except Exception as e:
-        st.error(f"Error connecting to Ollama: {str(e)}")
-        return None
+---
+**Instructions:**
+1. Use the sidebar to navigate between features
+2. Each tool has its own settings and parameters
+3. You can return to this home page anytime using the navigation
+""")
 
-# Display chat messages
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
-
-# Chat input
-if prompt := st.chat_input("What would you like to know?"):
-    # Add user message to chat history
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    
-    # Display user message
-    with st.chat_message("user"):
-        st.markdown(prompt)
-    
-    # Display assistant response
-    with st.chat_message("assistant"):
-        message_placeholder = st.empty()
-        
-        # Generate response
-        response = generate_response(prompt, temperature)
-        
-        if response:
-            message_placeholder.markdown(response)
-            # Add assistant response to chat history
-            st.session_state.messages.append({"role": "assistant", "content": response}) 
+# Add footer
+st.markdown("---")
+st.markdown("Powered by Llama 2 | Built with Streamlit")
