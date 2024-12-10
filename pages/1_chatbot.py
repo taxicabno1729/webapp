@@ -3,8 +3,12 @@
 # Remove or comment out the unused import
 # import json
 
+import os
+
 import requests
 import streamlit as st
+
+OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
 
 # Configure page settings
 st.set_page_config(page_title="Llama 2 Chatbot", page_icon="🦙")
@@ -40,7 +44,7 @@ def generate_response(prompt, temperature):
     """
     try:
         response = requests.post(
-            "http://localhost:11434/api/generate",
+            f"{OLLAMA_HOST}/api/generate",
             json={
                 "model": "llama3.2",
                 "prompt": prompt,
