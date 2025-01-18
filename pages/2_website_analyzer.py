@@ -1,5 +1,6 @@
 """Website content analyzer using Llama 2 model for intelligent analysis."""
 
+import os
 import re
 
 import requests
@@ -66,7 +67,7 @@ def analyze_with_llama(content):
     """
     try:
         response = requests.post(
-            "http://localhost:11434/api/generate",
+            f"{os.getenv('OLLAMA_HOST', 'http://localhost:11434')}/api/generate",
             json={
                 "model": "llama3.2",
                 "prompt": (

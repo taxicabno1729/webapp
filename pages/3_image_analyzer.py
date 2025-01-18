@@ -1,11 +1,14 @@
 """Image Text Analyzer module for extracting and analyzing text from images."""
 
 import io
+import os
 
 import pytesseract
 import requests
 import streamlit as st
 from PIL import Image
+
+OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
 
 # Configure page settings
 st.set_page_config(page_title="Image Text Analyzer", page_icon="📷")
@@ -42,7 +45,7 @@ def analyze_with_llama(content):
     """
     try:
         response = requests.post(
-            "http://localhost:11434/api/generate",
+            f"{OLLAMA_HOST}/api/generate",
             json={
                 "model": "llama3.2",
                 "prompt": (
